@@ -10,7 +10,7 @@ public class App
     public static void main( String[] args ) throws FileNotFoundException{
         MenuService menu = new MenuService(new PowersService());
         menu.start();
-        System.out.println("El programa ha finalizado");
+        System.out.println("Program is over");
     }
     
 }

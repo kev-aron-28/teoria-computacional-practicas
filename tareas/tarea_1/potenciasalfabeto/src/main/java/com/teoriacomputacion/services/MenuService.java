@@ -16,6 +16,7 @@ public class MenuService {
 
     public void start() throws FileNotFoundException {
         if(this.askIfRandom() == 1) {
+            System.out.println("The Power is: ");
             this.power = this.generateRandom();
         } else {
             this.power = this.askN();
@@ -33,20 +34,21 @@ public class MenuService {
     }
 
     public int askN() {
-        System.out.println("Type the quantity of powers ");
+        System.out.println("Type the quantity of powers: ");
         int n = scanner.nextInt();
         return n;
     }
 
     public int askIfRandom() {
-        System.out.println("Want a random number?: ");
+        System.out.println("Want a random number (1: Y, 0: N)?: ");
         int n = scanner.nextInt();
         return n;
     }
 
     public int generateRandom() {
         Random r = new Random();
-        int randomInt = r.nextInt(100) + 1;
+        int randomInt = r.nextInt(10) + 1;
+        System.out.println(randomInt);
 
         return randomInt;
     }
