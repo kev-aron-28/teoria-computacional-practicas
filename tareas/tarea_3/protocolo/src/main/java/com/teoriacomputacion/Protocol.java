@@ -1,20 +1,36 @@
 package com.teoriacomputacion;
 
+import java.awt.AWTEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JFrame;
+
+import com.teoriacomputacion.helpers.DrawDiagram;
 import com.teoriacomputacion.helpers.FileHelper;
 import com.teoriacomputacion.helpers.RandomBinary;
+
+import javafx.stage.WindowEvent;
 
 public class Protocol {
 
   private FileHelper evenBinaryFile;
   private FileHelper oddBinaryFile;
+  private JFrame frame;
+  private DrawDiagram diagram;
 
   public Protocol() {
     this.evenBinaryFile = new FileHelper("evenBinary.txt");
     this.oddBinaryFile = new FileHelper("oddBinary.txt");
+    this.frame = new JFrame("Protocol");
+    this.frame.setVisible(true);
+    this.frame.setSize(300,300);
+    frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
+    this.diagram = new DrawDiagram();
+
+    this.frame.add(diagram);
   }
 
   public void startProtocol() throws InterruptedException {
@@ -25,14 +41,19 @@ public class Protocol {
       send(binaryList);
       protocolIsOn = this.randomSwitch();
     }
+
+    frame.dispose();
+
     System.out.println("Turning down machine");
   }
 
   private ArrayList<String> ready() {
     ArrayList<String> s = new ArrayList<>(10000);
     System.out.println("Generating data");
-    for (int i = 0; i < 10000; i++) {
-      String binaryString = RandomBinary.generateBinaryString(64);
+    this.diagram.setActiveReadyOval(true, true);
+    this.diagram.setActiveSendingOval(false, false);
+    for (int i = 0; i < 10; i++) {
+      String binaryString = RandomBinary.generateBinaryString(4);
       s.add(binaryString);
     }
     return s;
@@ -40,6 +61,8 @@ public class Protocol {
 
   private void send(ArrayList<String> data) throws InterruptedException {
     boolean simulateTimeout = randomSwitch();
+    this.diagram.setActiveReadyOval(false, false);
+    this.diagram.setActiveSendingOval(true, true);
     while(simulateTimeout) {
       System.out.println("Timeout, trying again");
       TimeUnit.SECONDS.sleep(3);
@@ -47,7 +70,7 @@ public class Protocol {
     }
 
     for (String s : data) {
-      boolean isEven = ParityBinary.checkBinaryString(s);
+      boolean isEven = ParityBinary.checkBinaryString(s, diagram);
       if(isEven) evenBinaryFile.writeToFile(s);
       else oddBinaryFile.writeToFile(s);
     }
