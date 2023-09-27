@@ -140,6 +140,27 @@ public class DrawDiagram extends JPanel {
     g2.setColor(Color.RED);
   }
 
+  public void cleanParityOvals(boolean pause) {
+    this.isActiveq0 = false; 
+    this.isActiveq1 = false; 
+    this.isActiveq2 = false; 
+    this.isActiveq3 = false; 
+    repaint();
+    if(pause) this.pause();
+
+  }
+
+  public void cleanAll() {
+    this.isActiveq0 = false; 
+    this.isActiveq1 = false; 
+    this.isActiveq2 = false; 
+    this.isActiveq3 = false; 
+    this.isActiveReadyOval = false;
+    this.isActiveSendingOval = false;
+    repaint();
+    this.pause();
+  }
+
   public void setActiveReadyOval(boolean isActiveReadyOval, boolean pause) {
     this.isActiveReadyOval = isActiveReadyOval;
     repaint();
@@ -182,7 +203,7 @@ public class DrawDiagram extends JPanel {
 
   private void pause() {
     try {
-      Thread.sleep(800);
+      Thread.sleep(750);
     } catch (InterruptedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

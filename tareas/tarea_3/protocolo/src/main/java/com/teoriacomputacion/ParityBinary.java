@@ -15,6 +15,8 @@ public class ParityBinary {
     
     while(iterator.current() != CharacterIterator.DONE) {
       char current = iterator.current();
+      d.cleanParityOvals(false);
+
       if(status == BinaryStatus.q0 && current == '0') {
         status = BinaryStatus.q2;
         d.setActiveq2(true, true);

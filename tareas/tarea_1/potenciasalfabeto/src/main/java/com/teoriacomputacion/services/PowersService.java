@@ -17,11 +17,12 @@ public class PowersService {
     public void calculatePowersFromAlphabet (int power, int startIndex, String currentCombination[]) throws FileNotFoundException { 
         if(power == 0) {
             String toWrite = String.join("", currentCombination);
+            System.out.println(toWrite);
             int totalOnes = this.countOnesFromString(toWrite);
             fileService.writeToFile(toWrite + " " + totalOnes);
             return;
         }
-        
+
         for (int current = 0; current < alphabet.length; current++) {
             currentCombination[currentCombination.length - power] = alphabet[current];
             calculatePowersFromAlphabet(power - 1, startIndex+1, currentCombination);

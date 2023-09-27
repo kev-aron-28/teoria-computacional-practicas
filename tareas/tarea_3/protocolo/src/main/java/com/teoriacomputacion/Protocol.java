@@ -1,6 +1,5 @@
 package com.teoriacomputacion;
 
-import java.awt.AWTEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -10,8 +9,6 @@ import javax.swing.JFrame;
 import com.teoriacomputacion.helpers.DrawDiagram;
 import com.teoriacomputacion.helpers.FileHelper;
 import com.teoriacomputacion.helpers.RandomBinary;
-
-import javafx.stage.WindowEvent;
 
 public class Protocol {
 
@@ -39,6 +36,7 @@ public class Protocol {
     while(protocolIsOn) {
       ArrayList<String> binaryList = ready();
       send(binaryList);
+      this.diagram.cleanAll();
       protocolIsOn = this.randomSwitch();
     }
 
@@ -65,16 +63,23 @@ public class Protocol {
     this.diagram.setActiveSendingOval(true, true);
     while(simulateTimeout) {
       System.out.println("Timeout, trying again");
+
       TimeUnit.SECONDS.sleep(3);
       simulateTimeout = randomSwitch();
     }
 
     for (String s : data) {
       boolean isEven = ParityBinary.checkBinaryString(s, diagram);
+      this.diagram.cleanParityOvals(true);
+
       if(isEven) evenBinaryFile.writeToFile(s);
       else oddBinaryFile.writeToFile(s);
     }
+
+    this.diagram.cleanParityOvals(true);
+    this.diagram.setActiveSendingOval(false, false);
   }
+
 
   private boolean randomSwitch() {
     Random r = new Random();
