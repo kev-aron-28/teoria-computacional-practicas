@@ -36,7 +36,6 @@ public class Protocol {
     while(protocolIsOn) {
       ArrayList<String> binaryList = ready();
       send(binaryList);
-      this.diagram.cleanAll();
       protocolIsOn = this.randomSwitch();
     }
 

@@ -59,7 +59,6 @@ public class MenuService {
     public int generateRandom() {
         Random r = new Random();
         int randomInt = r.nextInt(10) + 1;
-        System.out.println(randomInt);
 
         return randomInt;
     }

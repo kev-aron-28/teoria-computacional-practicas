@@ -8,22 +8,23 @@ public class Menu {
 
     Scanner scanner = new Scanner(System.in);
     double n;
-
     PrimeBinary primeBinary;
     public Menu(PrimeBinary primeBinary) {
         this.primeBinary = primeBinary;
     }
 
     public void start() throws FileNotFoundException {
-        if(this.askIfRandom() == 1) {
-            this.n = this.generateRandom();
-        } else {
-            this.n = this.askN();
+        int isOn = 1;
+        while(isOn != 0) {
+            if (this.askIfRandom() == 1) {
+                System.out.println("N: ");
+                this.n = this.generateRandom();
+            } else {
+                this.n = this.askN();
+            }
+            this.primeBinary.calculatePrimes(this.n);
+            isOn = this.askIfContinue();
         }
-
-        this.primeBinary.calculatePrimes(n);
-
-        this.primeBinary.createChart();
     }
 
     public double askN() {
@@ -38,11 +39,15 @@ public class Menu {
         return n;
     }
 
+    public int askIfContinue() {
+        System.out.println("Want to continue(1: Y, 0: N): ");
+        int n = scanner.nextInt();
+        return n;
+    }
+
     public int generateRandom() {
         Random r = new Random();
-        int randomInt = r.nextInt(10) + 1;
-        System.out.println(randomInt);
-
+        int randomInt = r.nextInt(10000) + 1;
         return randomInt;
     }
 }

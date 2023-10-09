@@ -1,28 +1,38 @@
 package com.teoriacomputacion;
 
 import java.io.FileNotFoundException;
-import java.util.Map;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class PrimeBinary {
-    private FileHelper fileHelper;
+    private FileHelper binaryFile;
+    private FileHelper decimalFile;
     private ChartHelper chartHelper;
 
     public PrimeBinary() {
-        this.fileHelper = new FileHelper("output.txt");
+        this.binaryFile = new FileHelper("outputBinary.txt");
+        this.decimalFile = new FileHelper("outputDecimal.txt");
         this.chartHelper = new ChartHelper();
+        this.binaryFile.writeToFile("E={", false);
+        this.decimalFile.writeToFile("E={", false);
     }
 
-    public void calculatePrimes (double n) throws FileNotFoundException { 
+    public void calculatePrimes (double n) throws FileNotFoundException {
+        DefaultCategoryDataset dataForChart = new DefaultCategoryDataset();
+
         for (int counter = 2; counter <= n; counter++) {
             if(isPrime(counter)) {
-                System.out.println(counter);
                 String binary = Integer.toBinaryString(counter);
-                this.fileHelper.writeToFile( binary + " " + this.countOnesFromString(binary));
+                dataForChart.addValue(countOnesFromString(binary), "numero de 1's", binary);
+                this.binaryFile.writeToFile(binary, true);
+                this.decimalFile.writeToFile(counter + "", true);
             }
         }
+        this.binaryFile.writeToFile("}", false);
+        this.decimalFile.writeToFile("}", false);
+        this.chartHelper.createChart(dataForChart);
     }
 
-    private boolean isPrime(double n) {
+    private boolean isPrime (double n) {
         for (int i = 2; i <= Math.sqrt(n); i++) {
             if(n % i == 0){
                 return false;
@@ -43,10 +53,4 @@ public class PrimeBinary {
 
         return count;
     }
-
-    public void createChart() throws FileNotFoundException {
-        Map<String, Integer> data = this.fileHelper.readFile();
-        this.chartHelper.createChart(data);
-    }
-
 }
