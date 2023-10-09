@@ -4,7 +4,6 @@ import { Board } from "./entity/Board";
 
 export class GameController {
 
-
   public startGame (req: Request, res: Response) {
     const board: Board = new Board();
     const players = req.body.numberOfPlayers;
@@ -25,7 +24,6 @@ export class GameController {
     }
 
     return res.json(response);
-
   }
 
   public generateMoves (req: Request, res: Response) {
