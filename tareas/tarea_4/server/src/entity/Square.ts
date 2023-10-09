@@ -1,7 +1,6 @@
 export class Square {
-  
-  private _redOnes: number[];
-  private _blackOnes: number[];
+  private _redOnes: Square[] = [];
+  private _blackOnes: Square[] = [];
   private _number: number;
   private _color: string;
 
@@ -22,11 +21,11 @@ export class Square {
     return this._number;
   }
   
-  public set redOnes(reds: number[]) {
+  public set redOnes(reds: Square[]) {
     this._redOnes = reds;
   }
 
-  public set blackOnes(blacks: number[]) {
+  public set blackOnes(blacks: Square[]) {
     this._blackOnes = blacks;
   }
 

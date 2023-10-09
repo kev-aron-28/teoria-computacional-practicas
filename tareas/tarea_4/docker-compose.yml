@@ -1,0 +1,18 @@
+version: '1'
+services:
+  game:
+    build: 
+      dockerfile: Dockerfile
+      context: ./game
+    volumes:
+      - ./game:/app
+    ports:
+      - '8080:8080'
+  server:
+    build: 
+      dockerfile: Dockerfile
+      context: ./server
+    volumes:
+      - ./server:/app
+    ports:
+      - '3000:3000'
