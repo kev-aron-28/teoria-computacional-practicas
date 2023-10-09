@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { Square } from './Square';
 import * as fs from 'fs';
 
@@ -5,6 +6,13 @@ export class Tree {
   public selectedMove = ''
   public streamWritableAllmoves =  fs.createWriteStream('./games/moves.txt');
   private streamWritableWinners = fs.createWriteStream('./games/winners.txt');
+  private finalState: string;
+  constructor(finalState: string, winnersFile: string, movesFiles: string) {
+    this.finalState = finalState;
+    this.streamWritableAllmoves = fs.createWriteStream(movesFiles);
+    this.streamWritableWinners = fs.createWriteStream(winnersFile);
+  }
+
   public createTree(pattern: string, currentSquare: Square, patternPosition: number, actual: string) {
     if (patternPosition > pattern.length - 1) {      
       if(actual == '') actual = actual + currentSquare.label;
@@ -13,7 +21,7 @@ export class Tree {
       const movement: string = actual.slice().trimStart() + '\n'
       this.streamWritableAllmoves.write(movement);
       
-      if(actual.endsWith('16')) {
+      if(actual.endsWith(this.finalState)) {
         this.streamWritableWinners.write(movement);
         this.selectedMove = actual.slice().trimStart();
       }

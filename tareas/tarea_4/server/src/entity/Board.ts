@@ -1,3 +1,4 @@
+import { log } from "console";
 import { COLOR } from "./ColorBoard";
 import { Square } from "./Square";
 import { Tree } from "./Tree";
@@ -39,12 +40,15 @@ export class Board {
   
   public generateMoves () {
     if(this._playerOneMove && !this._playerTwoMove) {
-      const tree = new Tree();
+      const tree = new Tree('16', './games/winners.txt' , './games/moves.txt');
       tree.createTree(this._playerOneMove, this.square1, 0, '')
       return { moveForPlayerOne: tree.selectedMove }; 
     } else {
-      const treeForPlayerOne = new Tree();
-      const treeForPlayerTwo = new Tree();
+      console.log('GENERATING MOVING PLAYERS 2');
+      log(this._playerOneMove, this._playerTwoMove)
+      
+      const treeForPlayerOne = new Tree('16', './games/winners.txt' , './games/moves.txt');
+      const treeForPlayerTwo = new Tree('13', './games/winners2.txt', './games/moves2.txt');
       treeForPlayerOne.createTree(
         this._playerOneMove, 
         this.square1, 
@@ -57,6 +61,8 @@ export class Board {
         0,
         ''
       );
+
+      log(treeForPlayerOne.selectedMove, treeForPlayerTwo.selectedMove)
       return { 
         moveForPlayerOne: treeForPlayerOne.selectedMove,
         moveForPlayerTwo: treeForPlayerTwo.selectedMove

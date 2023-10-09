@@ -4,8 +4,8 @@ import Board from '../components/Board.vue';
 import { useGameStore } from '../composables/useGameStore';
 const gameStore = useGameStore();
 const logsDiv = ref(null);
-const inputPlayerOne = ref(null);
-const inputPlayerTwo = ref(null);
+const inputPlayerOne = ref('');
+const inputPlayerTwo = ref('');
 
 watch(
   () => gameStore.getQueue.length,
@@ -18,21 +18,26 @@ watch(
 );
 
 const setRandomStrings = async () => {
+  inputPlayerOne.value = '';
+  inputPlayerTwo.value = '';
   if(gameStore.getNumberOfPlayers === 1) {
     const { string1 } = await gameStore.getRandomStrings();
     inputPlayerOne.value = string1;
   } else {
-    const { string1, string2} = await gameStore.getRandomStrings();
+    const { string1, string2 } = await gameStore.getRandomStrings();
     inputPlayerOne.value = string1;
     inputPlayerTwo.value = string2;
   }
 }
-
 </script>
 
 <template>
   <main class="start">
     <div class="game">
+      <div class="movements">
+        <p class="movement">{{ gameStore.playerOneString }}</p>
+        <p class="movement">{{ gameStore.playerTwoString }}</p>
+      </div>
       <Board />
     </div>
     <div class="results">
@@ -41,12 +46,12 @@ const setRandomStrings = async () => {
           <input 
             class="results__input" 
             v-if="gameStore.isFirstActive"
-            v-bind:value="inputPlayerOne"
+            v-model="inputPlayerOne"
           >
           <input 
             class="results__input" 
             v-if="gameStore.isSecondActive"
-            v-bind:value="inputPlayerTwo"
+            v-model="inputPlayerTwo"
             >
         </div>
         <div class="results__buttons">
@@ -80,6 +85,22 @@ const setRandomStrings = async () => {
   justify-content: space-evenly;
   flex-direction: column;
 }
+
+.movements {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.movement:nth-child(1) {
+  color: #0099ff;
+}
+
+.movement:nth-child(2) {
+  color: #e4790e;
+}
+
+
 
 .results {
   width: 40%;
@@ -181,8 +202,8 @@ const setRandomStrings = async () => {
 
 
 .log {
-  font-size: 15px;
-  margin-top: 10px;
+  font-size: 13px;
+  margin-top: 15px;
 }
 
 .log1 {
@@ -192,7 +213,7 @@ const setRandomStrings = async () => {
 .log2 {
   color: #e4790e;
   align-self: flex-end;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .list-move,

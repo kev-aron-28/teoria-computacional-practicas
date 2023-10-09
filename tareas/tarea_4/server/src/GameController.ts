@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { GenrateString } from "./helpers/GenerateString";
 import { Board } from "./entity/Board";
+import { log } from "console";
 
 export class GameController {
 
@@ -22,7 +23,6 @@ export class GameController {
       response.movePlayerOne = moveForPlayerOne;
       response.movePlayerTwo = moveForPlayerTwo;
     }
-
     return res.json(response);
   }
 
@@ -30,13 +30,13 @@ export class GameController {
     const players = parseInt(req.body.numberOfPlayers)
 
     if(players == 1) {
-      const stringForPlayer = GenrateString.generateString(4); 
+      const stringForPlayer = GenrateString.generateString(10) + 'b'; 
       return res.json({
         string1: stringForPlayer
       })
     } else {
-      const stringForPlayer1 = GenrateString.generateString(4); 
-      const stringForPlayer2 = GenrateString.generateString(4); 
+      const stringForPlayer1 = GenrateString.generateString(4) + 'b'; 
+      const stringForPlayer2 = GenrateString.generateString(4) + 'r'; 
       return res.json({
         string1: stringForPlayer1,
         string2: stringForPlayer2
