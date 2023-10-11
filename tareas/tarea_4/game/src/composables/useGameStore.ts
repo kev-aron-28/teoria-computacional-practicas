@@ -14,6 +14,7 @@ export const useGameStore = defineStore('game', () => {
   const playerTwoString = ref('')
 
   const gameLogs = ref([]);
+  const isGameReady = ref(false)
 
   function setNumberOfPlayers(total: number) {
     if(total === 1) {
@@ -49,12 +50,6 @@ export const useGameStore = defineStore('game', () => {
       playerOneString.value = movePlayerOne;
       createQueuePlayerOne(movePlayerOne);
     } else {
-      console.log({ 
-        numberOfPlayers: numberOfPlayers.value, 
-        pattern1: moveOne,
-        pattern2: moveTwo
-      });
-      
       const response = await fetch(API + '/start', {
         body: JSON.stringify({ 
           numberOfPlayers: numberOfPlayers.value, 
@@ -71,16 +66,69 @@ export const useGameStore = defineStore('game', () => {
       playerTwoString.value = movePlayerTwo;
       createQueuePlayerOne(movePlayerOne, movePlayerTwo);
     }
+    isGameReady.value = true;
   }
 
-  async function getNewPath(traveledSoFar: string, squaresToAvoid: string, player: number, originalString: string) {
+  async function getNewPath(indexToCut: number, numPlayer: number) {
+    const movementsStringOfPlayer = numPlayer === 1 ? playerOneString.value : playerTwoString.value;
     const response = await fetch(API + '/rebuild', {
-      body: JSON.stringify({ traveledSoFar, squaresToAvoid, player }),
+      body: JSON.stringify({ indexToCut, player: numPlayer, string: movementsStringOfPlayer }),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
     });
+    const { path } = await response.json();
+    if(!path) {
+      gameLogs.value.push({ player: numPlayer, log: `Jugador ${numPlayer} sede su turno` });
+      const playerToReorder = numPlayer === 1 ? 2 : 1;
+      reOrderQueue(playerToReorder);
+    } else {
+      const pathArr = path.split(' ');
+      queueMovement.value.forEach(e => {
+        if(e.player == numPlayer) {
+          e.move = parseInt(pathArr.shift());
+        }
+      });
+      changeRoutePlayer(numPlayer, path,indexToCut )
+    }
+
+    changeGameStatus(true);
+  }
+
+  function changeRoutePlayer(player: number, route: string, indexToCut: number) {
+    if(player === 1) {
+      const oldPath = playerOneString.value.split(' ').slice(0, indexToCut).join(' ');
+      playerOneString.value = oldPath + ' ' + route;
+      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} a ${playerOneString.value}` })
+    } else {
+      const oldPath = playerTwoString.value.split(' ').slice(0, indexToCut).join(' ');
+      playerTwoString.value = oldPath + ' ' + route;
+      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} a ${playerTwoString.value}` })
+    }
+  }
+
+  function reOrderQueue (first: number) {
+    const playerOneQueue = [];
+    const playerTwoQueue = [];
+
+    while(queueMovement.value.length > 0) {
+      const { move, player } = queueMovement.value.shift();
+      if(player === 1) playerOneQueue.push({ move, player });
+      else playerTwoQueue.push({ move, player });
+    }
+
+    while(playerOneQueue.length > 0) {
+      if(first === 1) {
+        queueMovement.value.push(playerOneQueue.shift());
+        queueMovement.value.push(playerTwoQueue.shift());
+      } else {
+        console.log('REORDERING WITH 2');
+        
+        queueMovement.value.push(playerTwoQueue.shift());
+        queueMovement.value.push(playerOneQueue.shift());
+      }
+    }
   }
 
   function createQueuePlayerOne(movementStringPlayerOne:string, movementStringPlayerTwo?: string) {
@@ -123,6 +171,10 @@ export const useGameStore = defineStore('game', () => {
     })
   }
 
+  function changeGameStatus(status: boolean) {
+    isGameReady.value = status
+  }
+
   const getNumberOfPlayers = computed(() => numberOfPlayers.value);
   const isFirstActive = computed(() => firstPlayerActive.value);
   const isSecondActive = computed(() => secondPlayerActive.value);
@@ -145,7 +197,9 @@ export const useGameStore = defineStore('game', () => {
     getNewPath,
     createQueuePlayerOne,
     playerOneString,
-    playerTwoString
+    playerTwoString,
+    isGameReady,
+    changeGameStatus
   }
   
 });

@@ -25,7 +25,6 @@ export class Board {
   public square15: Square = new Square(15, COLOR.red);
   public square16: Square = new Square(16, COLOR.black);
   
-
   constructor() {
     this.buildBoard();
   }
@@ -40,14 +39,11 @@ export class Board {
   
   public generateMoves () {
     if(this._playerOneMove && !this._playerTwoMove) {
-      const tree = new Tree('16', './games/winners.txt' , './games/moves.txt');
+      const tree = new Tree('16', './games/winners1.txt' , './games/moves.txt');
       tree.createTree(this._playerOneMove, this.square1, 0, '')
       return { moveForPlayerOne: tree.selectedMove }; 
     } else {
-      console.log('GENERATING MOVING PLAYERS 2');
-      log(this._playerOneMove, this._playerTwoMove)
-      
-      const treeForPlayerOne = new Tree('16', './games/winners.txt' , './games/moves.txt');
+      const treeForPlayerOne = new Tree('16', './games/winners1.txt' , './games/moves.txt');
       const treeForPlayerTwo = new Tree('13', './games/winners2.txt', './games/moves2.txt');
       treeForPlayerOne.createTree(
         this._playerOneMove, 
@@ -62,23 +58,10 @@ export class Board {
         ''
       );
 
-      log(treeForPlayerOne.selectedMove, treeForPlayerTwo.selectedMove)
       return { 
         moveForPlayerOne: treeForPlayerOne.selectedMove,
         moveForPlayerTwo: treeForPlayerTwo.selectedMove
       }; 
-    }
-  }
-  
-  private createFolder () {
-    const folder = '/games'
-    try {
-      if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder);
-        fs.appendFile(__dirname + '../../' + folder + '/moves.txt', 'hola', (err) => console.log(err));
-      }
-    } catch (err) {
-      console.error(err);
     }
   }
 
