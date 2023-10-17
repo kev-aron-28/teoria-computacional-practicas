@@ -39,17 +39,16 @@ public class Protocol {
       protocolIsOn = this.randomSwitch();
     }
 
-    frame.dispose();
-
+    this.frame.dispose();
     System.out.println("Turning down machine");
   }
 
   private ArrayList<String> ready() {
-    ArrayList<String> s = new ArrayList<>(10000);
+    ArrayList<String> s = new ArrayList<>(7);
     System.out.println("Generating data");
     this.diagram.setActiveReadyOval(true, true);
     this.diagram.setActiveSendingOval(false, false);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 7; i++) {
       String binaryString = RandomBinary.generateBinaryString(4);
       s.add(binaryString);
     }

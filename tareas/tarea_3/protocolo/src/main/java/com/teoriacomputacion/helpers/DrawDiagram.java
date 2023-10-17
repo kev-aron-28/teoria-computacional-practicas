@@ -205,7 +205,6 @@ public class DrawDiagram extends JPanel {
     try {
       Thread.sleep(750);
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

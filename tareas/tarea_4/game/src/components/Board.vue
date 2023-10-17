@@ -46,7 +46,7 @@ const drawPlayerInPosition = (move: number, player: number) => {
 }
 
 const checkIfCollision = (move: number, player: number) => {
-  if (gameStore.getNumberOfPlayers == 1) return;
+  if (gameStore.getNumberOfPlayers == 1) return { collision: false, index: 0};
   let collision = false;
   let index = 0;
   if (player === 1) {
@@ -54,7 +54,6 @@ const checkIfCollision = (move: number, player: number) => {
       gameStore.addLogCollision(1, 2, move);
       collision = true;
       index = indexStringPlayer1.value;
-      console.log(index);
       
     }
   } else {
@@ -62,7 +61,6 @@ const checkIfCollision = (move: number, player: number) => {
       gameStore.addLogCollision(2, 1, move);
       collision = true;
       index = indexStringPlayer2.value;
-      console.log(index);
     }
   }
 
@@ -91,8 +89,6 @@ const mainLoop = () => {
       return;
     }
     drawPlayerInPosition(move, player);
-    console.log(indexStringPlayer1.value, indexStringPlayer2.value);
-    
   }, 900);
 
 }

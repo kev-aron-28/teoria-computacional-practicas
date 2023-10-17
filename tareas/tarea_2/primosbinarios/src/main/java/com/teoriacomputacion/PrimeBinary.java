@@ -4,14 +4,14 @@ import java.io.FileNotFoundException;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class PrimeBinary {
+    private ChartHelper chartHelper;
     private FileHelper binaryFile;
     private FileHelper decimalFile;
-    private ChartHelper chartHelper;
 
     public PrimeBinary() {
+        this.chartHelper = new ChartHelper();
         this.binaryFile = new FileHelper("outputBinary.txt");
         this.decimalFile = new FileHelper("outputDecimal.txt");
-        this.chartHelper = new ChartHelper();
         this.binaryFile.writeToFile("E={", false);
         this.decimalFile.writeToFile("E={", false);
     }
@@ -22,7 +22,11 @@ public class PrimeBinary {
         for (int counter = 2; counter <= n; counter++) {
             if(isPrime(counter)) {
                 String binary = Integer.toBinaryString(counter);
-                dataForChart.addValue(countOnesFromString(binary), "numero de 1's", binary);
+                dataForChart.addValue(
+                    countOnesFromString(binary), 
+                    "numero de 1's", 
+                    binary
+                );
                 this.binaryFile.writeToFile(binary, true);
                 this.decimalFile.writeToFile(counter + "", true);
             }

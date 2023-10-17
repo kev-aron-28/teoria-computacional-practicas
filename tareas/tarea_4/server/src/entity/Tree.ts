@@ -4,8 +4,8 @@ import * as fs from 'fs';
 
 export class Tree {
   public selectedMove = ''
-  public streamWritableAllmoves =  fs.createWriteStream('./games/moves.txt');
-  private streamWritableWinners = fs.createWriteStream('./games/winners.txt');
+  public streamWritableAllmoves;
+  private streamWritableWinners;
   private finalState: string;
   constructor(finalState: string, winnersFile: string, movesFiles: string) {
     this.finalState = finalState;

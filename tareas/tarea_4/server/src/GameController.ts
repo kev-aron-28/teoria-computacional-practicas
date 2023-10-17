@@ -5,7 +5,6 @@ import * as fs from 'fs';
 import readline from 'readline';
 import { GenerateRandomNumber } from "./helpers/GenerateRandomNumber";
 
-
 export class GameController {
   public startGame(req: Request, res: Response) {
     const board: Board = new Board();
@@ -29,7 +28,7 @@ export class GameController {
   }
 
   public generateMoves(req: Request, res: Response) {
-    const randomNumber = GenerateRandomNumber.random(4, 12);
+    const randomNumber = GenerateRandomNumber.random(4, 16);
     const players = parseInt(req.body.numberOfPlayers)
     if (players == 1) {
       const stringForPlayer = GenrateString.generateString(randomNumber) + 'b';
@@ -52,8 +51,6 @@ export class GameController {
     const toAvoid = parseInt(req.body.indexToCut);
     const player = req.body.player;
     const prefixString = stringArr.slice(0, toAvoid).join(' ');
-    console.log(prefixString, stringArr.slice(toAvoid).join(' '));
-    
     const findNewPath = () => {
       return new Promise((resolve, reject) => {
         const file = readline.createInterface({

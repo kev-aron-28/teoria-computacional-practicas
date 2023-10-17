@@ -99,12 +99,14 @@ export const useGameStore = defineStore('game', () => {
   function changeRoutePlayer(player: number, route: string, indexToCut: number) {
     if(player === 1) {
       const oldPath = playerOneString.value.split(' ').slice(0, indexToCut).join(' ');
-      playerOneString.value = oldPath + ' ' + route;
-      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} a ${playerOneString.value}` })
+      const newPath = oldPath + ' ' + route
+      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} de ${playerOneString.value} a ${newPath}` })
+      playerOneString.value = newPath
     } else {
-      const oldPath = playerTwoString.value.split(' ').slice(0, indexToCut).join(' ');
-      playerTwoString.value = oldPath + ' ' + route;
-      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} a ${playerTwoString.value}` })
+      const oldPath = playerOneString.value.split(' ').slice(0, indexToCut).join(' ');
+      const newPath = oldPath + ' ' + route;
+      gameLogs.value.push({ player, log: `Cambiando ruta del jugador ${player} de ${playerOneString.value} a ${newPath}` })
+      playerOneString.value = newPath;
     }
   }
 

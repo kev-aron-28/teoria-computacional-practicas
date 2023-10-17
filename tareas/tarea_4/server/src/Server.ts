@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import { GameRoutes } from './GameRoutes';
 
@@ -8,7 +8,7 @@ export class Server {
  
  constructor() {
   this._app = express();
-  this.middlewares()
+  this.middlewares();
  }
 
  private middlewares() {
