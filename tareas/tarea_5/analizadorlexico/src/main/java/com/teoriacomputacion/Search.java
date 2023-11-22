@@ -49,7 +49,7 @@ public class Search {
   }
 
   public void read() throws IOException {
-    File file = new File("src/main/java/com/teoriacomputacion/program");
+    File file = new File("src/main/java/com/teoriacomputacion/Search.java");
     FileReader reader = new FileReader(file);
     int x = 0,y = 0;
     int content;

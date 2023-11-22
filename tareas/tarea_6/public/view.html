@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Push down automata</title>
+  <link rel="stylesheet" href="./pusdown.css">
+</head>
+<body>
+  <main>
+    <div class="input-data">
+      <input type="text" placeholder="Ingresa una cadena" maxlength="10" id="data">
+      <button onclick="start()">Inicia</button>
+    </div>
+  
+    <div class="reader">
+      <div class="reader-content" id="content"></div>
+      <div class="blur left-blur"></div>
+      <div class="blur right-blur"></div>
+    </div>
+
+    <div class="pushdown">
+      <div class="pushdown-state" id="state"></div>
+      <div class="pushdown-stack" id="stackDiv">
+        <div class="pushdown-stack-item">Z</div>
+      </div>
+    </div>
+  </main>
+  <script src="anime.min.js"></script>
+  <script src="./pushdown.js"></script>
+</body>
+</html>

@@ -44,12 +44,12 @@ public class Protocol {
   }
 
   private ArrayList<String> ready() {
-    ArrayList<String> s = new ArrayList<>(7);
+    ArrayList<String> s = new ArrayList<>(8);
     System.out.println("Generating data");
     this.diagram.setActiveReadyOval(true, true);
     this.diagram.setActiveSendingOval(false, false);
-    for (int i = 0; i < 7; i++) {
-      String binaryString = RandomBinary.generateBinaryString(4);
+    for (int i = 0; i < 8; i++) {
+      String binaryString = RandomBinary.generateBinaryString(6);
       s.add(binaryString);
     }
     return s;
@@ -61,7 +61,6 @@ public class Protocol {
     this.diagram.setActiveSendingOval(true, true);
     while(simulateTimeout) {
       System.out.println("Timeout, trying again");
-
       TimeUnit.SECONDS.sleep(3);
       simulateTimeout = randomSwitch();
     }
